@@ -5,33 +5,38 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/menuHam"
+            android:icon="@drawable/ic_soup"
+            android:title="Món Hầm" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/menuMan"
+            android:icon="@drawable/ic_pan"
+            android:title="Món Mặn" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/menuChay"
+            android:icon="@drawable/ic_salad"
+            android:title="Món Chay" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+        android:id="@+id/menuNgot"
+        android:icon="@drawable/ic_cupcake"
+        android:title="Món Ngọt" />
+        <item
+            android:id="@+id/menuCanh"
+            android:icon="@drawable/ic_hot_pot"
+            android:title="Món Canh" />
+
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Tài Khoản">
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:icon="@drawable/ic_info"
+                android:title="Thông Tin Cá Nhân" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:icon="@drawable/ic_exit"
+                android:title="Đăng Xuất" />
         </menu>
     </item>
 
