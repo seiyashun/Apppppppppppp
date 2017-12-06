@@ -1,19 +1,38 @@
 package com.tangtuongco.apppppppppppp.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by Administrator on 30/11/2017.
  */
 
-public class User extends Account {
+public class User extends Account implements Serializable {
+
   private String Name;
   private String Email;
   private Date NgaySinh;
   private String SoDienThoai;
   private String DiaChi;
+  private ArrayList<BaiViet> arrayListBaiViet;
+
+    public User(String ID, String PASSWORD, String name, String email, Date ngaySinh, String soDienThoai, String diaChi, ArrayList<BaiViet> arrayListBaiViet) {
+        super(ID, PASSWORD);
+        Name = name;
+        Email = email;
+        NgaySinh = ngaySinh;
+        SoDienThoai = soDienThoai;
+        DiaChi = diaChi;
+        this.arrayListBaiViet = arrayListBaiViet;
+    }
+
+    public User() {
+
+    }
 
     public String getName() {
+
         return Name;
     }
 
@@ -27,14 +46,6 @@ public class User extends Account {
 
     public void setEmail(String email) {
         Email = email;
-    }
-
-    public String getDiaChi() {
-        return DiaChi;
-    }
-
-    public void setDiaChi(String diaChi) {
-        DiaChi = diaChi;
     }
 
     public Date getNgaySinh() {
@@ -53,18 +64,19 @@ public class User extends Account {
         SoDienThoai = soDienThoai;
     }
 
-    public User(String ID, String password, String name, String email, String diaChi, Date ngaySinh, String soDienThoai, String diaChi1) {
-        super(ID, password);
-        Name = name;
-
-        Email = email;
-        DiaChi = diaChi;
-        NgaySinh = ngaySinh;
-        SoDienThoai = soDienThoai;
-        DiaChi = diaChi1;
+    public String getDiaChi() {
+        return DiaChi;
     }
 
-    public User(String ID, String password) {
-        super(ID, password);
+    public void setDiaChi(String diaChi) {
+        DiaChi = diaChi;
+    }
+
+    public ArrayList<BaiViet> getArrayListBaiViet() {
+        return arrayListBaiViet;
+    }
+
+    public void setArrayListBaiViet(ArrayList<BaiViet> arrayListBaiViet) {
+        this.arrayListBaiViet = arrayListBaiViet;
     }
 }

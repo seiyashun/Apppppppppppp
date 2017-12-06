@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        app:cardCornerRadius="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imageviewBaiViet"
+                android:layout_margin="5dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+            <TextView
+                android:textColor="#101010"
+                android:id="@+id/txtTenBaiViet"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:text="Tên Bài Viết"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtTenNguoiViet"
+                android:textColor="#aa50da"
+                android:textSize="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Tên Người Đăng"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+    
+
+</LinearLayout>

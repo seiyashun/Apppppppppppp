@@ -1,5 +1,6 @@
 package com.tangtuongco.apppppppppppp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,17 +17,20 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.squareup.picasso.Picasso;
 import com.tangtuongco.apppppppppppp.R;
+import com.tangtuongco.apppppppppppp.model.User;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     ViewFlipper viewFlipper;
     ListView lstMain;
+    TextView idbarrr,emailbarr;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +56,24 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+        idbarrr=header.findViewById(R.id.txtIDBARR);
+        emailbarr=header.findViewById(R.id.txtEMAILBARRR);
+        getSupportActionBar().setTitle("Trang Chủ");
+
+
 
         anhxa();
         ActionViewFlipper();
+        control();
+
+    }
+
+    private void control() {
+        Intent i =getIntent();
+        user= (User) i.getSerializableExtra("taikhoan");
+        idbarrr.setText(user.getName().toString());
+        emailbarr.setText(user.getEmail().toString());
     }
 
     private void ActionViewFlipper() {
@@ -82,6 +101,8 @@ public class MainActivity extends AppCompatActivity
 
 
     private void anhxa() {
+
+
         viewFlipper = findViewById(R.id.viewflipper);
         lstMain = findViewById(R.id.lstMain);
     }

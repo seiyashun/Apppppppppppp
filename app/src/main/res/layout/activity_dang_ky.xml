@@ -19,5 +19,108 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:padding="20dp"
+                android:layout_gravity="center_horizontal"
+
+                android:text="ID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:padding="5dp"
+                android:layout_gravity="center_horizontal"
+                android:text="PASSWORD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:padding="20dp"
+                android:layout_gravity="center_horizontal"
+                android:text="NAME"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:padding="20dp"
+                android:layout_gravity="center_horizontal"
+                android:text="EMAIL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:padding="0dp"
+                android:layout_gravity="center_horizontal"
+                android:text="BIRTHDAY"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:padding="20dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Mobilephone Number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:padding="20dp"
+                android:layout_gravity="center_horizontal"
+                android:text="ADDRESS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edtID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:inputType="textPassword"
+
+                android:id="@+id/edtPASS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/edtNAME"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+
+                android:id="@+id/edtEMAIL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+
+                android:id="@+id/edtBIRTH"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+
+                android:digits="0123456789."
+                android:inputType="numberDecimal"
+                android:id="@+id/edtNUMBER"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/edtADDRESS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnSIGNUP"
+        android:text="SIGN UP"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
