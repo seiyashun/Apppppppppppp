@@ -128,6 +128,7 @@ public class DangKyActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(DangKyActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
             }
