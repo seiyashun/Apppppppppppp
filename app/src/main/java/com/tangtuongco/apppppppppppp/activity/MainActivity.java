@@ -2,6 +2,7 @@ package com.tangtuongco.apppppppppppp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -18,10 +19,19 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tangtuongco.apppppppppppp.R;
+import com.tangtuongco.apppppppppppp.model.BaiViet;
 import com.tangtuongco.apppppppppppp.model.User;
 
 import java.util.ArrayList;
@@ -30,7 +40,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ViewFlipper viewFlipper;
     ListView lstMain;
     TextView idbarrr,emailbarr;
+    DatabaseReference mData;
     User user;
+    int flag=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle("Trang Chủ");
 
 
-
+        mData= FirebaseDatabase.getInstance().getReference("BaiViet");
         anhxa();
         ActionViewFlipper();
         control();
@@ -74,6 +86,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         user= (User) i.getSerializableExtra("taikhoan");
         idbarrr.setText(user.getName().toString());
         emailbarr.setText(user.getEmail().toString());
+        BaiViet baiViet=new BaiViet();
+        baiViet.setIduser(user.getID());
+        String id=user.getID();
+        mData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                BaiViet bv = new BaiViet();
+                bv.setIduser(user.getID());
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    BaiViet post = postSnapshot.getValue(BaiViet.class);
+                    String idddd = post.getIduser();
+
+
+                    if (idddd.equals(user.getID())) {
+                        {
+
+                            flag = 1;
+
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        if(flag!=0)
+        {
+
+        }
+        else
+        {
+            mData.child(id).setValue(baiViet).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                }
+            });
+        }
     }
 
     private void ActionViewFlipper() {

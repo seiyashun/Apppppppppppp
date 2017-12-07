@@ -1,39 +1,15 @@
 package com.tangtuongco.apppppppppppp.model;
 
-import java.util.ArrayList;
-
 /**
- * Created by Administrator on 06/12/2017.
+ * Created by Administrator on 08/12/2017.
  */
 
 public class ChiTietBaiViet {
-    private String mabaiviet;
-    private String noidung;
     private String video;
-    private ArrayList<BinhLuan> binhluan;
+    private String IDChiTietBaiViet;
+    private String IDCuaBaiViet;
 
-    public ChiTietBaiViet(String mabaiviet, String noidung, String video, ArrayList<BinhLuan> binhluan) {
-        this.mabaiviet = mabaiviet;
-        this.noidung = noidung;
-        this.video = video;
-        this.binhluan = binhluan;
-    }
-
-    public String getMabaiviet() {
-
-        return mabaiviet;
-    }
-
-    public void setMabaiviet(String mabaiviet) {
-        this.mabaiviet = mabaiviet;
-    }
-
-    public String getNoidung() {
-        return noidung;
-    }
-
-    public void setNoidung(String noidung) {
-        this.noidung = noidung;
+    public ChiTietBaiViet() {
     }
 
     public String getVideo() {
@@ -44,11 +20,26 @@ public class ChiTietBaiViet {
         this.video = video;
     }
 
-    public ArrayList<BinhLuan> getBinhluan() {
-        return binhluan;
+    public String getIDChiTietBaiViet() {
+        return IDChiTietBaiViet;
     }
 
-    public void setBinhluan(ArrayList<BinhLuan> binhluan) {
-        this.binhluan = binhluan;
+    public void setIDChiTietBaiViet(String IDChiTietBaiViet) {
+        this.IDChiTietBaiViet = IDChiTietBaiViet;
+    }
+
+    public String getIDCuaBaiViet() {
+        return IDCuaBaiViet;
+    }
+
+    public void setIDCuaBaiViet(String IDCuaBaiViet) {
+        this.IDCuaBaiViet = IDCuaBaiViet;
+    }
+
+    public ChiTietBaiViet(String video, String IDChiTietBaiViet, String IDCuaBaiViet) {
+
+        this.video = video;
+        this.IDChiTietBaiViet = IDChiTietBaiViet;
+        this.IDCuaBaiViet = IDCuaBaiViet;
     }
 }

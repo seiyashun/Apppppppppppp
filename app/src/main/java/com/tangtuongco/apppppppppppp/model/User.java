@@ -3,49 +3,36 @@ package com.tangtuongco.apppppppppppp.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
- * Created by Administrator on 30/11/2017.
+ * Created by Administrator on 07/12/2017.
  */
 
-public class User extends Account implements Serializable {
+public class User implements Serializable {
+    private String ID;
+    private String Password;
+    private Date NgaySinh;
+    private String DiaChi;
+    private String SDT;
+    private String Email;
+    private String Name;
+    ArrayList<BaiViet> listBaiViet;
 
-  private String Name;
-  private String Email;
-  private Date NgaySinh;
-  private String SoDienThoai;
-  private String DiaChi;
-  private ArrayList<BaiViet> arrayListBaiViet;
-
-    public User(String ID, String PASSWORD, String name, String email, Date ngaySinh, String soDienThoai, String diaChi, ArrayList<BaiViet> arrayListBaiViet) {
-        super(ID, PASSWORD);
-        Name = name;
-        Email = email;
-        NgaySinh = ngaySinh;
-        SoDienThoai = soDienThoai;
-        DiaChi = diaChi;
-        this.arrayListBaiViet = arrayListBaiViet;
+    public String getID() {
+        return ID;
     }
 
-    public User() {
-
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
-    public String getName() {
-
-        return Name;
+    public String getPassword() {
+        return Password;
     }
 
-    public void setName(String name) {
-        Name = name;
-    }
-
-    public String getEmail() {
-        return Email;
-    }
-
-    public void setEmail(String email) {
-        Email = email;
+    public void setPassword(String password) {
+        Password = password;
     }
 
     public Date getNgaySinh() {
@@ -56,14 +43,6 @@ public class User extends Account implements Serializable {
         NgaySinh = ngaySinh;
     }
 
-    public String getSoDienThoai() {
-        return SoDienThoai;
-    }
-
-    public void setSoDienThoai(String soDienThoai) {
-        SoDienThoai = soDienThoai;
-    }
-
     public String getDiaChi() {
         return DiaChi;
     }
@@ -72,11 +51,51 @@ public class User extends Account implements Serializable {
         DiaChi = diaChi;
     }
 
-    public ArrayList<BaiViet> getArrayListBaiViet() {
-        return arrayListBaiViet;
+    public String getSDT() {
+        return SDT;
     }
 
-    public void setArrayListBaiViet(ArrayList<BaiViet> arrayListBaiViet) {
-        this.arrayListBaiViet = arrayListBaiViet;
+    public void setSDT(String SDT) {
+        this.SDT = SDT;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public ArrayList<BaiViet> getListBaiViet() {
+        return listBaiViet;
+    }
+
+    public void setListBaiViet(ArrayList<BaiViet> listBaiViet) {
+        this.listBaiViet = listBaiViet;
+    }
+
+    public User() {
+
+    }
+
+    public User(String ID, String password, Date ngaySinh, String diaChi, String SDT, String email, String name, ArrayList<BaiViet> listBaiViet) {
+
+        this.ID = ID;
+        Password = password;
+        NgaySinh = ngaySinh;
+        DiaChi = diaChi;
+        this.SDT = SDT;
+        Email = email;
+        Name = name;
+        this.listBaiViet = listBaiViet;
     }
 }

@@ -1,28 +1,31 @@
 package com.tangtuongco.apppppppppppp.activity;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.tangtuongco.apppppppppppp.R;
+import com.tangtuongco.apppppppppppp.model.BaiViet;
 import com.tangtuongco.apppppppppppp.model.User;
 import com.tangtuongco.apppppppppppp.ulti.FormatHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DangKyActivity extends AppCompatActivity {
@@ -30,6 +33,9 @@ public class DangKyActivity extends AppCompatActivity {
     EditText edtID,edtPASSWORD,edtNAME,edtBIRTH,edtNUMBER,edtEMAIL,edtADDRESS;
     Button btnSIGNUP;
     User nguoidung = new User();
+    int flag=0;
+
+
    
 
 
@@ -48,6 +54,7 @@ public class DangKyActivity extends AppCompatActivity {
                 finish();
             }
         });
+        mData=FirebaseDatabase.getInstance().getReference("User");
 
         anhxa();
         control();
@@ -57,76 +64,83 @@ public class DangKyActivity extends AppCompatActivity {
     }
 
     private void control() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference table_user= database.getReference("User");
-
+        final int flag = 0;
         btnSIGNUP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                table_user.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child(edtID.getText().toString()).exists())
+                addUser();
+            }
+        });
+
+    }
+
+    private void addUser() {
+        String ID=edtID.getText().toString().trim();
+        String NgaySin=edtBIRTH.getText().toString();
+        String DiaChi=edtADDRESS.getText().toString();
+        String Name=edtNAME.getText().toString();
+        String Email=edtEMAIL.getText().toString();
+        String SDT=edtNUMBER.getText().toString();
+        String Pass=edtPASSWORD.getText().toString();
+
+        if(!TextUtils.isEmpty(ID))
+        {
+            User user= new User();
+            try {
+                user.setNgaySinh(FormatHelper.formatstring(NgaySin));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            user.setID(ID);
+            user.setPassword(Pass);
+            user.setSDT(SDT);
+            user.setEmail(Email);
+            user.setName(Name);
+            user.setDiaChi(DiaChi);
+
+            mData.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot postSnapshot:dataSnapshot.getChildren()) {
+                        User post = postSnapshot.getValue(User.class);
+                        String idddd = post.getID();
+
+                        if (idddd.equals(edtID.getText().toString()))
                         {
-                            Toast.makeText(DangKyActivity.this, "Tồn tại ID", Toast.LENGTH_SHORT).show();
-
-
-                        }
-                        else
-                        {
-                            if(edtID.getText().toString().trim().length()<=7 )
-                            {
-                                Toast.makeText(DangKyActivity.this, "Nhập ID lớn hơn 7 kí tự", Toast.LENGTH_SHORT).show();
-                            }
-                            if(edtNAME.getText().toString().length()==0)
-                            {
-                                Toast.makeText(DangKyActivity.this, "Nhập tên", Toast.LENGTH_SHORT).show();
-                            }
-                            if (edtPASSWORD.getText().toString().length()<=7)
-                            {
-                                Toast.makeText(DangKyActivity.this, "Password phải lớn hơn hoặc bằng 7 kí tự", Toast.LENGTH_SHORT).show();
-                            }
-                            if(edtADDRESS.getText().toString().trim().length()==0)
-                            {
-                                Toast.makeText(DangKyActivity.this, "Địa chỉ không hợp lệ", Toast.LENGTH_SHORT).show();
-                            }
-                            if(edtBIRTH.getText().toString().trim().length()==0)
-                            {
-                                Toast.makeText(DangKyActivity.this, "Nhập ngày sinh định dạnh dd/MM/yyyy", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
-                                User user=new User();
-                                user.setID(edtID.getText().toString());
-                                user.setName(edtNAME.getText().toString());
-                                user.setEmail(edtEMAIL.getText().toString());
-                                user.setSoDienThoai(edtNUMBER.getText().toString());
-                                user.setDiaChi(edtADDRESS.getText().toString());
-                                user.setPASSWORD(edtPASSWORD.getText().toString());
-                                try {
-                                    user.setNgaySinh(FormatHelper.formatstring(edtBIRTH.getText().toString()));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-
-
-                                table_user.child(edtID.getText().toString()).setValue(user);
-                                Toast.makeText(DangKyActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-
-
+                            flag++;
                         }
                     }
+                }
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            if(flag!=0)
+            {
+                Toast.makeText(this, "Đăng Ký Không Thành Công", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                mData.child(ID).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(DangKyActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
-        });
+
+
+
+
+        }
+        else
+        {
+            Toast.makeText(this, "Xin Nhập ID", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 

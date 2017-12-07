@@ -1,61 +1,46 @@
 package com.tangtuongco.apppppppppppp.model;
 
-import java.util.ArrayList;
-
 /**
- * Created by Administrator on 06/12/2017.
+ * Created by Administrator on 08/12/2017.
  */
 
 public class BaiViet {
-    private String mabaiviet;
-    private String matheloai;
-    private String hinhanh;
+    private String iduser;
+
+    public String getIduser() {
+        return iduser;
+    }
+
+    public void setIduser(String iduser) {
+        this.iduser = iduser;
+    }
+
+    private String IDBAIVIET;
+    private String TenBaiViet;
 
     public BaiViet() {
     }
 
-    public String getMabaiviet() {
+    public String getIDBAIVIET() {
 
-        return mabaiviet;
+        return IDBAIVIET;
     }
 
-    public void setMabaiviet(String mabaiviet) {
-        this.mabaiviet = mabaiviet;
+    public void setIDBAIVIET(String IDBAIVIET) {
+        this.IDBAIVIET = IDBAIVIET;
     }
 
-    public String getMatheloai() {
-        return matheloai;
+    public String getTenBaiViet() {
+        return TenBaiViet;
     }
 
-    public void setMatheloai(String matheloai) {
-        this.matheloai = matheloai;
+    public void setTenBaiViet(String tenBaiViet) {
+        TenBaiViet = tenBaiViet;
     }
 
-    public String getHinhanh() {
-        return hinhanh;
+    public BaiViet(String iduser, String IDBAIVIET, String tenBaiViet) {
+        this.iduser = iduser;
+        this.IDBAIVIET = IDBAIVIET;
+        TenBaiViet = tenBaiViet;
     }
-
-    public void setHinhanh(String hinhanh) {
-        this.hinhanh = hinhanh;
-    }
-
-    public ChiTietBaiViet getChiTietBaiViet() {
-        return chiTietBaiViet;
-    }
-
-    public void setChiTietBaiViet(ChiTietBaiViet chiTietBaiViet) {
-        this.chiTietBaiViet = chiTietBaiViet;
-    }
-
-    public BaiViet(String mabaiviet, String matheloai, String hinhanh, ChiTietBaiViet chiTietBaiViet) {
-
-        this.mabaiviet = mabaiviet;
-        this.matheloai = matheloai;
-        this.hinhanh = hinhanh;
-        this.chiTietBaiViet = chiTietBaiViet;
-    }
-
-    private ChiTietBaiViet chiTietBaiViet;
-
-
 }
