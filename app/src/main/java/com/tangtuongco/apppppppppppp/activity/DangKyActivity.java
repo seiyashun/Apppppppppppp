@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,10 +13,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.tangtuongco.apppppppppppp.R;
 import com.tangtuongco.apppppppppppp.model.BaiViet;
@@ -28,15 +31,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.os.Build.ID;
+
 public class DangKyActivity extends AppCompatActivity {
-    DatabaseReference mData;
-    EditText edtID,edtPASSWORD,edtNAME,edtBIRTH,edtNUMBER,edtEMAIL,edtADDRESS;
-    Button btnSIGNUP;
+    DatabaseReference mData, mUser;
+    EditText edtID, edtPASSWORD, edtNAME, edtBIRTH, edtNUMBER, edtEMAIL, edtADDRESS;
+    Button btnSIGNUP,btnCheckkkkk;
     User nguoidung = new User();
-    int flag=0;
-
-
-   
+    int count = 0;
 
 
     @Override
@@ -54,17 +56,20 @@ public class DangKyActivity extends AppCompatActivity {
                 finish();
             }
         });
-        mData=FirebaseDatabase.getInstance().getReference("User");
+        mData = FirebaseDatabase.getInstance().getReference();
+
 
         anhxa();
+        btnSIGNUP.setEnabled(true);
         control();
 
 
 
     }
 
+
     private void control() {
-        final int flag = 0;
+
         btnSIGNUP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,66 +79,69 @@ public class DangKyActivity extends AppCompatActivity {
 
     }
 
+
     private void addUser() {
-        String ID=edtID.getText().toString().trim();
-        String NgaySin=edtBIRTH.getText().toString();
-        String DiaChi=edtADDRESS.getText().toString();
-        String Name=edtNAME.getText().toString();
-        String Email=edtEMAIL.getText().toString();
-        String SDT=edtNUMBER.getText().toString();
-        String Pass=edtPASSWORD.getText().toString();
+        final String ID = edtID.getText().toString().trim();
+        final String NgaySin = edtBIRTH.getText().toString();
+        final String DiaChi = edtADDRESS.getText().toString();
+        final String Name = edtNAME.getText().toString();
+        final String Email = edtEMAIL.getText().toString();
+        final String SDT = edtNUMBER.getText().toString();
+        final String Pass = edtPASSWORD.getText().toString();
 
-        if(!TextUtils.isEmpty(ID))
-        {
-            User user= new User();
-            try {
-                user.setNgaySinh(FormatHelper.formatstring(NgaySin));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-            user.setID(ID);
-            user.setPassword(Pass);
-            user.setSDT(SDT);
-            user.setEmail(Email);
-            user.setName(Name);
-            user.setDiaChi(DiaChi);
+        if (!TextUtils.isEmpty(ID)) {
 
-            mData.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for(DataSnapshot postSnapshot:dataSnapshot.getChildren()) {
-                        User post = postSnapshot.getValue(User.class);
-                        String idddd = post.getID();
+                final User user = new User();
+                try {
+                    user.setNgaySinh(FormatHelper.formatstring(NgaySin));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                        if (idddd.equals(edtID.getText().toString()))
+                user.setID(ID);
+                user.setPassword(Pass);
+                user.setSDT(SDT);
+                user.setEmail(Email);
+                user.setName(Name);
+                user.setDiaChi(DiaChi);
+
+
+                mData.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        int flag = 0;
+                        for(DataSnapshot postSnapshot:dataSnapshot.getChildren()) {
+                            User a = postSnapshot.getValue(User.class);
+                            //Log.d("AAA",String.valueOf(a.getID()));
+                            if(a.getID().equals(ID))
+                            {
+
+                                    flag = 1;
+
+                            }
+                        }
+                        if(flag == 1)
                         {
-                            flag++;
+                            Toast.makeText(DangKyActivity.this, "Trùng Tài Khoản", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            mData.child("User").child(ID).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(DangKyActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                                    finish();
+
+                                }
+                            });
                         }
                     }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-            if(flag!=0)
-            {
-                Toast.makeText(this, "Đăng Ký Không Thành Công", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                mData.child(ID).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(DangKyActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                        finish();
+                    public void onCancelled(DatabaseError databaseError) {
+
                     }
                 });
-            }
-
-
 
 
         }
@@ -141,19 +149,45 @@ public class DangKyActivity extends AppCompatActivity {
         {
             Toast.makeText(this, "Xin Nhập ID", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void addNewUser(User user) {
+        final String ID = edtID.getText().toString().trim();
+        String NgaySin = edtBIRTH.getText().toString();
+        String DiaChi = edtADDRESS.getText().toString();
+        String Name = edtNAME.getText().toString();
+        String Email = edtEMAIL.getText().toString();
+        String SDT = edtNUMBER.getText().toString();
+        String Pass = edtPASSWORD.getText().toString();
+
+        try {
+            user.setNgaySinh(FormatHelper.formatstring(NgaySin));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        user.setID(ID);
+        user.setPassword(Pass);
+        user.setSDT(SDT);
+        user.setEmail(Email);
+        user.setName(Name);
+        user.setDiaChi(DiaChi);
+        mData.child(ID).setValue(user);
+
 
     }
 
 
     private void anhxa() {
-        edtID=findViewById(R.id.edtID);
-        edtPASSWORD=findViewById(R.id.edtPASS);
-        edtNAME=findViewById(R.id.edtNAME);
-        edtEMAIL=findViewById(R.id.edtEMAIL);
-        edtBIRTH=findViewById(R.id.edtBIRTH);
-        edtADDRESS=findViewById(R.id.edtADDRESS);
-        edtNUMBER=findViewById(R.id.edtNUMBER);
-        btnSIGNUP=findViewById(R.id.btnSIGNUP);
+        edtID = findViewById(R.id.edtID);
+        edtPASSWORD = findViewById(R.id.edtPASS);
+        edtNAME = findViewById(R.id.edtNAME);
+        edtEMAIL = findViewById(R.id.edtEMAIL);
+        edtBIRTH = findViewById(R.id.edtBIRTH);
+        edtADDRESS = findViewById(R.id.edtADDRESS);
+        edtNUMBER = findViewById(R.id.edtNUMBER);
+        btnSIGNUP = findViewById(R.id.btnSIGNUP);
+
 
 
     }

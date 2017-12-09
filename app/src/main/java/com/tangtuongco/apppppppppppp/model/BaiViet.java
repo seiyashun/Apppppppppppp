@@ -1,11 +1,17 @@
 package com.tangtuongco.apppppppppppp.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by Administrator on 08/12/2017.
  */
 
 public class BaiViet {
     private String iduser;
+    private String idchude;
+    private String IDBAIVIET;
+    private String TenBaiViet;
+    ChiTietBaiViet chiTietBaiViet;
 
     public String getIduser() {
         return iduser;
@@ -15,14 +21,15 @@ public class BaiViet {
         this.iduser = iduser;
     }
 
-    private String IDBAIVIET;
-    private String TenBaiViet;
+    public String getIdchude() {
+        return idchude;
+    }
 
-    public BaiViet() {
+    public void setIdchude(String idchude) {
+        this.idchude = idchude;
     }
 
     public String getIDBAIVIET() {
-
         return IDBAIVIET;
     }
 
@@ -38,9 +45,24 @@ public class BaiViet {
         TenBaiViet = tenBaiViet;
     }
 
-    public BaiViet(String iduser, String IDBAIVIET, String tenBaiViet) {
+    public ChiTietBaiViet getChiTietBaiViet() {
+        return chiTietBaiViet;
+    }
+
+    public void setChiTietBaiViet(ChiTietBaiViet chiTietBaiViet) {
+        this.chiTietBaiViet = chiTietBaiViet;
+    }
+
+    public BaiViet() {
+
+    }
+
+    public BaiViet(String iduser, String idchude, String IDBAIVIET, String tenBaiViet, ChiTietBaiViet chiTietBaiViet) {
+
         this.iduser = iduser;
+        this.idchude = idchude;
         this.IDBAIVIET = IDBAIVIET;
         TenBaiViet = tenBaiViet;
+        this.chiTietBaiViet = chiTietBaiViet;
     }
 }

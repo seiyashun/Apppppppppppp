@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DatabaseReference mData;
     User user;
     int flag=0;
+    ArrayList<BaiViet> listbvuser = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +56,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, ThemBaiViet.class);
+                intent.putExtra("taikhoan", user);
+                startActivity(intent);
             }
         });
 
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 BaiViet bv = new BaiViet();
                 bv.setIduser(user.getID());
 
+
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     BaiViet post = postSnapshot.getValue(BaiViet.class);
                     String idddd = post.getIduser();
@@ -122,12 +125,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else
         {
-            mData.child(id).setValue(baiViet).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
+           mData.child(id).setValue(baiViet).addOnCompleteListener(new OnCompleteListener<Void>() {
+               @Override
+               public void onComplete(@NonNull Task<Void> task) {
 
-                }
-            });
+               }
+           });
         }
     }
 

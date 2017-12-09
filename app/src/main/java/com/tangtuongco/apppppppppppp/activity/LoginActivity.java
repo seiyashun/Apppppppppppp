@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         anhxa();
-        mData=FirebaseDatabase.getInstance().getReference("User");
+        mData=FirebaseDatabase.getInstance().getReference();
 
 
         addControl();
@@ -60,48 +61,54 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser() {
-
-
-        mData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot postSnapshot:dataSnapshot.getChildren()) {
-                    User post = postSnapshot.getValue(User.class);
-                    String idddd = post.getID();
-                    String passs=post.getPassword();
-
-                    if (idddd.equals(edtID.getText().toString()))
-                    {
-                        if(passs.equals(edtPass.getText().toString())) {
-
-                            flag=1;
-                            user=post;
+        final String ID = edtID.getText().toString();
+        final String Pass=edtPass.getText().toString();
+        if (!TextUtils.isEmpty(ID))
+        {
+            mData.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    int flag = 0;
+                    for(DataSnapshot postSnapshot:dataSnapshot.getChildren()) {
+                        User a = postSnapshot.getValue(User.class);
+                        //Log.d("AAA",String.valueOf(a.getID()));
+                        if(a.getID().equals(ID))
+                        {
+                            if(a.getPassword().equals(Pass)) {
+                                user=a;
+                                flag = 1;
+                            }
 
                         }
+                    }
+                    if(flag == 1)
+                    {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("taikhoan", user);
+                        startActivity(intent);
+                        return;
+                    }
+                    else
+                    {
+
+                        Toast.makeText(LoginActivity.this, "Sai Tài Khoản Hoặc Mật Khẩu", Toast.LENGTH_SHORT).show();
+
 
                     }
-
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
                 }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        if(flag!=0)
-        {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("taikhoan", user);
-            startActivity(intent);
-            return;
+            });
         }
-
         else
         {
-            Toast.makeText(LoginActivity.this, "Sai Tài Khoản Hoặc Mật Khẩu", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Xin Nhập ID", Toast.LENGTH_SHORT).show();
         }
+
+
+
 
 
     }

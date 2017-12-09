@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "490587569532",
+    "firebase_url": "https://cookapp-db2c5.firebaseio.com",
+    "project_id": "cookapp-db2c5",
+    "storage_bucket": "cookapp-db2c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490587569532:android:7cb092da605a3b53",
+        "android_client_info": {
+          "package_name": "com.tangtuongco.cookapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490587569532-hracpa1goa2d6u81co1bo3mu01l5im2i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4SdIc043km5ZEjX1qpahl4qmJt0-N2ls"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490587569532:android:c16bd49189ff242a",
+        "android_client_info": {
+          "package_name": "com.tangtuongco.apppppppppppp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490587569532-hracpa1goa2d6u81co1bo3mu01l5im2i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4SdIc043km5ZEjX1qpahl4qmJt0-N2ls"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
