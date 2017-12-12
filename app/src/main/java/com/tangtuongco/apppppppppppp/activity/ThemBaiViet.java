@@ -203,7 +203,7 @@ public class ThemBaiViet extends AppCompatActivity {
         {
             txtTrangThai.setText(filePath.toString());
             filePath=data.getData();
-           
+
 
         }
         if(resultCode==RESULT_OK) {
