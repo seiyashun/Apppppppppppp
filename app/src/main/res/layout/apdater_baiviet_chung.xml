@@ -5,42 +5,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardView"
-        app:cardCornerRadius="4dp"
+       <LinearLayout
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <LinearLayout
+               android:layout_gravity="center"
+
+               android:orientation="vertical"
+               android:layout_width="250dp"
+               android:layout_height="wrap_content">
+               <TextView
+                   android:textColor="#101010"
+                   android:id="@+id/txtTenBaiViet"
+                   android:gravity="center"
+                   android:textSize="30dp"
+                   android:text="Tên Bài Viết"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" />
+
+               <TextView
+                   android:textColor="#46042c"
+                   android:id="@+id/txtTenTheLoai"
+                   android:gravity="center"
+                   android:textSize="15dp"
+                   android:text="Tên Thể Loại"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" />
+
+           </LinearLayout>
+           <LinearLayout
+               android:gravity="right"
+               android:textAlignment="gravity"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+               <ImageView
+                   android:id="@+id/imgListMonAn"
+                   android:src="@drawable/logooo"
+                   android:layout_alignParentRight="true"
+
+
+                   android:layout_width="150dp"
+                   android:layout_height="100dp" />
+
+
+           </LinearLayout>
+       </LinearLayout>
+    <LinearLayout
+        android:gravity="right"
+        android:textAlignment="gravity"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/imageviewBaiViet"
-                android:layout_margin="5dp"
-                android:layout_width="100dp"
-                android:layout_height="100dp" />
-            <TextView
-                android:textColor="#101010"
-                android:id="@+id/txtTenBaiViet"
-                android:gravity="center"
-                android:textSize="20dp"
-                android:text="Tên Bài Viết"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/txtTenNguoiViet"
-                android:textColor="#aa50da"
-                android:textSize="10dp"
-                android:layout_marginTop="10dp"
-                android:text="Tên Người Đăng"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <TextView
 
-        </LinearLayout>
+            android:id="@+id/txtTenNguoiViet"
+            android:textColor="#aa50da"
+            android:textSize="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Tên Người Đăng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+
+
     
 
 </LinearLayout>

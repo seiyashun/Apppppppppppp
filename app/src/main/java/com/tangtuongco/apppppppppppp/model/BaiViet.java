@@ -8,8 +8,9 @@ import java.util.ArrayList;
 
 public class BaiViet {
     private String iduser;
-    private String idchude;
+    private String tenchude;
     private String IDBAIVIET;
+    private String ImageIndex;
     private String TenBaiViet;
     ChiTietBaiViet chiTietBaiViet;
 
@@ -21,12 +22,12 @@ public class BaiViet {
         this.iduser = iduser;
     }
 
-    public String getIdchude() {
-        return idchude;
+    public String getTenchude() {
+        return tenchude;
     }
 
-    public void setIdchude(String idchude) {
-        this.idchude = idchude;
+    public void setTenchude(String tenchude) {
+        this.tenchude = tenchude;
     }
 
     public String getIDBAIVIET() {
@@ -35,6 +36,14 @@ public class BaiViet {
 
     public void setIDBAIVIET(String IDBAIVIET) {
         this.IDBAIVIET = IDBAIVIET;
+    }
+
+    public String getImageIndex() {
+        return ImageIndex;
+    }
+
+    public void setImageIndex(String imageIndex) {
+        ImageIndex = imageIndex;
     }
 
     public String getTenBaiViet() {
@@ -57,11 +66,12 @@ public class BaiViet {
 
     }
 
-    public BaiViet(String iduser, String idchude, String IDBAIVIET, String tenBaiViet, ChiTietBaiViet chiTietBaiViet) {
+    public BaiViet(String iduser, String tenchude, String IDBAIVIET, String imageIndex, String tenBaiViet, ChiTietBaiViet chiTietBaiViet) {
 
         this.iduser = iduser;
-        this.idchude = idchude;
+        this.tenchude = tenchude;
         this.IDBAIVIET = IDBAIVIET;
+        ImageIndex = imageIndex;
         TenBaiViet = tenBaiViet;
         this.chiTietBaiViet = chiTietBaiViet;
     }

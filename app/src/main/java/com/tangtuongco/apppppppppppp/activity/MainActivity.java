@@ -24,6 +24,7 @@ import android.widget.ViewFlipper;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +32,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tangtuongco.apppppppppppp.R;
+import com.tangtuongco.apppppppppppp.adapter.adapterManHinhChinh;
 import com.tangtuongco.apppppppppppp.model.BaiViet;
+import com.tangtuongco.apppppppppppp.model.ChiTietBaiViet;
+import com.tangtuongco.apppppppppppp.model.ChuDe;
 import com.tangtuongco.apppppppppppp.model.User;
 
 import java.util.ArrayList;
@@ -39,10 +43,10 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     ViewFlipper viewFlipper;
     ListView lstMain;
-    TextView idbarrr,emailbarr;
+    TextView idbarrr, emailbarr;
     DatabaseReference mData;
     User user;
-    int flag=0;
+    int flag = 0;
     ArrayList<BaiViet> listbvuser = new ArrayList<>();
 
     @Override
@@ -70,48 +74,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View header=navigationView.getHeaderView(0);
-        idbarrr=header.findViewById(R.id.txtIDBARR);
-        emailbarr=header.findViewById(R.id.txtEMAILBARRR);
+        View header = navigationView.getHeaderView(0);
+        idbarrr = header.findViewById(R.id.txtIDBARR);
+        emailbarr = header.findViewById(R.id.txtEMAILBARRR);
         getSupportActionBar().setTitle("Trang Chủ");
 
 
-        mData= FirebaseDatabase.getInstance().getReference("BaiViet");
+        mData = FirebaseDatabase.getInstance().getReference();
         anhxa();
+
         ActionViewFlipper();
         control();
+        loadDataUser();
+        loadDataBaiViet();
+
 
     }
 
-    private void control() {
-        Intent i =getIntent();
-        user= (User) i.getSerializableExtra("taikhoan");
-        idbarrr.setText(user.getName().toString());
-        emailbarr.setText(user.getEmail().toString());
-        BaiViet baiViet=new BaiViet();
-        baiViet.setIduser(user.getID());
-        String id=user.getID();
-        mData.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void loadDataBaiViet() {
+
+
+        final ArrayList<BaiViet> arrBaiViet=new ArrayList<>();
+        final adapterManHinhChinh adaptarmain = new adapterManHinhChinh(arrBaiViet, getApplicationContext());
+        lstMain.setAdapter(adaptarmain);
+        mData.child("DanhSachBaiViet").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                BaiViet bv = new BaiViet();
-                bv.setIduser(user.getID());
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                BaiViet bv  = dataSnapshot.getValue(BaiViet.class);
+                arrBaiViet.add(bv);
+                adaptarmain.notifyDataSetChanged();
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    BaiViet post = postSnapshot.getValue(BaiViet.class);
-                    String idddd = post.getIduser();
+            }
 
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    if (idddd.equals(user.getID())) {
-                        {
+            }
 
-                            flag = 1;
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                        }
-
-                    }
-                }
             }
 
             @Override
@@ -119,35 +125,89 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-        if(flag!=0)
-        {
 
-        }
-        else
-        {
-           mData.child(id).setValue(baiViet).addOnCompleteListener(new OnCompleteListener<Void>() {
-               @Override
-               public void onComplete(@NonNull Task<Void> task) {
 
-               }
-           });
-        }
+
+
+
+    }
+
+    private void loadDataUser() {
+        String id = user.getID().toString();
+        BaiViet baiViet = new BaiViet();
+        baiViet.setIduser(user.getID());
+//        mData.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                BaiViet bv = new BaiViet();
+//                bv.setIduser(user.getID());
+//
+//
+//                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                    BaiViet post = postSnapshot.getValue(BaiViet.class);
+//                    String idddd = post.getIduser();
+//                    if(idddd==null)
+//                    {
+//                        flag=0;
+//                    }
+//                    else
+//
+//
+//                    if (idddd.equals(user.getID())) {
+//                        {
+//
+//                            flag = 1;
+//
+//                        }
+//
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//        if(flag!=0)
+//        {
+//
+//        }
+//        else
+//        {
+//            mData.child("DanhSachBaiViet").child("BaiViet").child(id).setValue(baiViet).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                @Override
+//                public void onComplete(@NonNull Task<Void> task) {
+//
+//                }
+//            });
+//        }
+    }
+
+    private void control() {
+        Intent i = getIntent();
+        user = (User) i.getSerializableExtra("taikhoan");
+        idbarrr.setText(user.getName().toString());
+        emailbarr.setText(user.getEmail().toString());
+
+        String id = user.getID();
+
+
     }
 
     private void ActionViewFlipper() {
-        ArrayList<Integer> mangquangcao= new ArrayList<>();
+        ArrayList<Integer> mangquangcao = new ArrayList<>();
         mangquangcao.add(R.drawable.anh1);
         mangquangcao.add(R.drawable.anh2);
         mangquangcao.add(R.drawable.anh3);
         mangquangcao.add(R.drawable.anh4);
-        for(int i=0;i<mangquangcao.size();i++)
-        {
+        for (int i = 0; i < mangquangcao.size(); i++) {
             ImageView imageView = new ImageView(getApplicationContext());
             Picasso.with(getApplicationContext()).load(mangquangcao.get(i)).into(imageView);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             viewFlipper.addView(imageView);
-            Animation animation_slide_in = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_right);
-            Animation animation_slide_out = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out_right);
+            Animation animation_slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right);
+            Animation animation_slide_out = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right);
             viewFlipper.setInAnimation(animation_slide_in);
             viewFlipper.setOutAnimation(animation_slide_out);
 
@@ -202,7 +262,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

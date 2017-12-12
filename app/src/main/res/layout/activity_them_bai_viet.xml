@@ -7,6 +7,24 @@
     android:orientation="vertical"
     tools:context="com.tangtuongco.apppppppppppp.activity.ThemBaiViet">
     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/logooo"
+            android:id="@+id/imgMonAn"
+            android:layout_width="180dp"
+            android:layout_height="180dp" />
+        <Button
+            android:id="@+id/btnChon"
+            android:text="Chọn Hình"
+            android:layout_margin="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

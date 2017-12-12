@@ -1,5 +1,6 @@
 package com.tangtuongco.apppppppppppp.activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ public class DangKyActivity extends AppCompatActivity {
     DatabaseReference mData, mUser;
     EditText edtID, edtPASSWORD, edtNAME, edtBIRTH, edtNUMBER, edtEMAIL, edtADDRESS;
     Button btnSIGNUP,btnCheckkkkk;
-    User nguoidung = new User();
+    User user = new User();
     int count = 0;
 
 
@@ -61,14 +62,22 @@ public class DangKyActivity extends AppCompatActivity {
 
         anhxa();
         btnSIGNUP.setEnabled(true);
+        loadDataSpinner();
         control();
 
 
 
     }
 
+    private void loadDataSpinner() {
+
+    }
+
 
     private void control() {
+        Intent i =getIntent();
+        user= (User) i.getSerializableExtra("taikhoan");
+
 
         btnSIGNUP.setOnClickListener(new View.OnClickListener() {
             @Override
