@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("taikhoan", user);
-                           
+
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             finish();
