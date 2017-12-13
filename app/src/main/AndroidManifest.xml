@@ -38,7 +38,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             >
         </activity>
-        <activity android:name=".activity.HostActivity"></activity>
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name=".activity.HostActivity"></activity>
+
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.tangtuongco.apppppppppppp.R;
 import com.tangtuongco.apppppppppppp.model.Host;
 import com.tangtuongco.apppppppppppp.model.User;
+import com.tangtuongco.apppppppppppp.ulti.FormatHelper;
 
 public class LoginActivity extends AppCompatActivity {
     EditText edtID,edtPass;
@@ -80,7 +81,10 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             Toast.makeText(LoginActivity.this, "Host đăng nhập", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this,HostActivity.class);
+
+
                             startActivity(intent);
+
                         }
                     }
 
@@ -127,7 +131,10 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("taikhoan", user);
+                           
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
+                            finish();
                             return;
                         }
                         else

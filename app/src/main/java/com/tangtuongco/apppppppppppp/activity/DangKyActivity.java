@@ -1,5 +1,6 @@
 package com.tangtuongco.apppppppppppp.activity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import com.tangtuongco.apppppppppppp.model.User;
 import com.tangtuongco.apppppppppppp.ulti.FormatHelper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,9 +40,11 @@ import static android.os.Build.ID;
 public class DangKyActivity extends AppCompatActivity {
     DatabaseReference mData, mUser;
     EditText edtID, edtPASSWORD, edtNAME, edtBIRTH, edtNUMBER, edtEMAIL, edtADDRESS;
-    Button btnSIGNUP,btnCheckkkkk;
+    Button btnSIGNUP, btnCheckkkkk,btnChonNgay;
     User user = new User();
     int count = 0;
+    Calendar dateTime= Calendar.getInstance();
+    private int mYear, mMonth, mDay;
 
 
     @Override
@@ -54,7 +59,9 @@ public class DangKyActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                onBackPressed();
+
+
             }
         });
         mData = FirebaseDatabase.getInstance().getReference();
@@ -66,7 +73,6 @@ public class DangKyActivity extends AppCompatActivity {
         control();
 
 
-
     }
 
     private void loadDataSpinner() {
@@ -75,8 +81,8 @@ public class DangKyActivity extends AppCompatActivity {
 
 
     private void control() {
-        Intent i =getIntent();
-        user= (User) i.getSerializableExtra("taikhoan");
+        Intent i = getIntent();
+        user = (User) i.getSerializableExtra("taikhoan");
 
 
         btnSIGNUP.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +91,55 @@ public class DangKyActivity extends AppCompatActivity {
                 addUser();
             }
         });
+        btnChonNgay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                new DatePickerDialog(DangKyActivity.this,d,dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
+
+
+            }
+        });
+
+    }
+    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+            dateTime.set(Calendar.YEAR,i);
+            dateTime.set(Calendar.MONTH,i1);
+            dateTime.set(Calendar.DAY_OF_MONTH,i2);
+            Calendar c = Calendar.getInstance();
+
+            if(c.get(Calendar.YEAR)<dateTime.get(Calendar.YEAR))
+            {
+
+            }
+            else
+            {
+                if(c.get(Calendar.MONTH)<dateTime.get(Calendar.MONTH))
+                {
+
+                }
+                else
+                {
+                    if(c.get(Calendar.DAY_OF_MONTH)<dateTime.get(Calendar.DAY_OF_MONTH))
+                    {
+                        Toast.makeText(DangKyActivity.this, "Lớn hơn ngày hiện tại !!! LỖI", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        updateText();
+                    }
+                }
+            }
+
+
+
+        }
+    };
+
+    private void updateText() {
+        edtBIRTH.setText(FormatHelper.formatNgay(dateTime.getTime()));
     }
 
 
@@ -101,6 +155,18 @@ public class DangKyActivity extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(ID)) {
 
+            if(ID.trim().length()<7)
+            {
+                Toast.makeText(this, "ID phải dài hơn 7 kí tự", Toast.LENGTH_SHORT).show();
+            }
+            else
+            if(Pass.length()<7)
+            {
+                Toast.makeText(this, "PASS phải dài hơn 7 kí tự", Toast.LENGTH_SHORT).show();
+            }
+
+            else
+            {
                 final User user = new User();
                 try {
                     user.setNgaySinh(FormatHelper.formatstring(NgaySin));
@@ -116,27 +182,22 @@ public class DangKyActivity extends AppCompatActivity {
                 user.setDiaChi(DiaChi);
 
 
-
                 mData.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         int flag = 0;
-                        for(DataSnapshot postSnapshot:dataSnapshot.getChildren()) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                             User a = postSnapshot.getValue(User.class);
                             //Log.d("AAA",String.valueOf(a.getID()));
-                            if(a.getID().equals(ID))
-                            {
+                            if (a.getID().equals(ID)) {
 
-                                    flag = 1;
+                                flag = 1;
 
                             }
                         }
-                        if(flag == 1)
-                        {
+                        if (flag == 1) {
                             Toast.makeText(DangKyActivity.this, "Trùng Tài Khoản", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
+                        } else {
                             mData.child("User").child(ID).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -147,16 +208,18 @@ public class DangKyActivity extends AppCompatActivity {
                             });
                         }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
                 });
+            }
 
 
-        }
-        else
-        {
+
+
+        } else {
             Toast.makeText(this, "Xin Nhập ID", Toast.LENGTH_SHORT).show();
         }
     }
@@ -197,7 +260,7 @@ public class DangKyActivity extends AppCompatActivity {
         edtADDRESS = findViewById(R.id.edtADDRESS);
         edtNUMBER = findViewById(R.id.edtNUMBER);
         btnSIGNUP = findViewById(R.id.btnSIGNUP);
-
+        btnChonNgay=findViewById(R.id.btnChonNgay);
 
 
     }
