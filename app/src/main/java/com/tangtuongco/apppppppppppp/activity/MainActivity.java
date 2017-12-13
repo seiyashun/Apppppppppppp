@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void thucthi(ArrayList<BaiViet> arrBaiViet, adapterManHinhChinh adaptarmain) {
+    public void thucthi(ArrayList<BaiViet> arrBaiViet, adapterManHinhChinh adaptarmain) {
 
 
         Collections.sort(arrBaiViet, new Comparator<BaiViet>() {

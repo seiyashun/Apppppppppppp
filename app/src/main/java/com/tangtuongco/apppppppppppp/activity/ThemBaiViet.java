@@ -50,21 +50,19 @@ import java.util.Locale;
 import java.util.Random;
 
 public class ThemBaiViet extends AppCompatActivity {
-    User user=new User();
+    User user = new User();
     EditText edtTieuDe;
     ImageView imgMonAn;
-    Button btnDangBai,btnUpload,btnChon;
+    Button btnDangBai, btnUpload, btnChon;
     TextView txtTrangThai;
     Spinner spinnerTHELOAI;
-    String record="";
+    String record = "";
     String tamthoi;
     DatabaseReference mData;
     private Uri filePath;
-    private static final int REQUEST_READ_PERMISSION=9003;
-    final int REQUEST_CHOOSE_PIC =321;
+    private static final int REQUEST_READ_PERMISSION = 9003;
+    final int REQUEST_CHOOSE_PIC = 321;
     FirebaseStorage storage = FirebaseStorage.getInstance();
-
-
 
 
     @Override
@@ -77,7 +75,7 @@ public class ThemBaiViet extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Bài Viết Mới");
         anhxa();
-        mData= FirebaseDatabase.getInstance().getReference();
+        mData = FirebaseDatabase.getInstance().getReference();
 
         loadDataSpinner();
 
@@ -87,12 +85,12 @@ public class ThemBaiViet extends AppCompatActivity {
 
     private void loadDataSpinner() {
         final ArrayList<String> arrChuDe = new ArrayList<>();
-        final ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrChuDe);
+        final ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrChuDe);
         spinnerTHELOAI.setAdapter(adapterSpinner);
         mData.child("DanhSachTheLoai").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                ChuDe cd=dataSnapshot.getValue(ChuDe.class);
+                ChuDe cd = dataSnapshot.getValue(ChuDe.class);
                 arrChuDe.add(cd.getTenChuDe().toString());
                 adapterSpinner.notifyDataSetChanged();
 
@@ -120,7 +118,6 @@ public class ThemBaiViet extends AppCompatActivity {
         });
 
 
-
     }
 
     private void control() {
@@ -134,11 +131,8 @@ public class ThemBaiViet extends AppCompatActivity {
                 chonpic();
 
 
-
             }
         });
-
-
 
 
         btnUpload.setOnClickListener(new View.OnClickListener() {
@@ -152,26 +146,26 @@ public class ThemBaiViet extends AppCompatActivity {
         btnDangBai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int idbaiviet= createID();
-                String chude=spinnerTHELOAI.getSelectedItem().toString();
-                ChiTietBaiViet chitiet=new ChiTietBaiViet();
-                BaiViet bv=new BaiViet();
+                int idbaiviet = createID();
+                String chude = spinnerTHELOAI.getSelectedItem().toString();
+                ChiTietBaiViet chitiet = new ChiTietBaiViet();
+                BaiViet bv = new BaiViet();
                 bv.setIduser(user.getID().toString());
                 bv.setTenchude(chude);
                 bv.setIDBAIVIET(String.valueOf(idbaiviet));
                 chitiet.setIDCuaBaiViet(bv.getIDBAIVIET());
-                int idchitiet= createID();
-                idchitiet=idchitiet+1;
+                int idchitiet = createID();
+                idchitiet = idchitiet + 1;
                 chitiet.setIDChiTietBaiViet(String.valueOf(idchitiet));
                 bv.setTenBaiViet(edtTieuDe.getText().toString());
                 bv.setChiTietBaiViet(chitiet);
                 bv.setImageIndex(tamthoi);
 
-                Long tslong = System.currentTimeMillis()/1000;
-                String ts=tslong.toString();
+                Long tslong = System.currentTimeMillis() / 1000;
+                String ts = tslong.toString();
                 bv.setTime(ts);
 
-                String IDBAIVIET= createID()+ user.getID().toString();
+                String IDBAIVIET = createID() + user.getID().toString();
                 mData.child("DanhSachBaiViet").push().setValue(bv).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -185,27 +179,27 @@ public class ThemBaiViet extends AppCompatActivity {
         });
 
 
-
     }
 
     private void ThemLink(String linkhinh) {
-        tamthoi=linkhinh;
+        tamthoi = linkhinh;
     }
 
     private void chonpic() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        startActivityForResult(intent,REQUEST_CHOOSE_PIC);
+        startActivityForResult(intent, REQUEST_CHOOSE_PIC);
     }
 
-    public int createID(){
+    public int createID() {
         Date now = new Date();
-        int id = Integer.parseInt(new SimpleDateFormat("ddHHmmss",  Locale.US).format(now));
+        int id = Integer.parseInt(new SimpleDateFormat("ddHHmmss", Locale.US).format(now));
         return id;
     }
-    public int createIDBaiViet(){
+
+    public int createIDBaiViet() {
         Date now = new Date();
-        int id = Integer.parseInt(new SimpleDateFormat("ssmmHHDD",  Locale.US).format(now));
+        int id = Integer.parseInt(new SimpleDateFormat("ssmmHHDD", Locale.US).format(now));
         return id;
     }
 
@@ -214,14 +208,13 @@ public class ThemBaiViet extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         final StorageReference storageRef = storage.getReferenceFromUrl("gs://cookapp-db2c5.appspot.com");
-        if(requestCode==REQUEST_READ_PERMISSION && requestCode==RESULT_OK && data!=null && data.getData()!=null)
-        {
+        if (requestCode == REQUEST_READ_PERMISSION && requestCode == RESULT_OK && data != null && data.getData() != null) {
             txtTrangThai.setText(filePath.toString());
-            filePath=data.getData();
+            filePath = data.getData();
 
 
         }
-        if(resultCode==RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CHOOSE_PIC) {
 
 
@@ -235,7 +228,7 @@ public class ThemBaiViet extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                StorageReference mountainsRef = storageRef.child("monan" +createID()+".png");
+                StorageReference mountainsRef = storageRef.child("monan" + createID() + ".png");
                 //Them Hinh Len Sto
                 imgMonAn.setDrawingCacheEnabled(true);
                 imgMonAn.buildDrawingCache();
@@ -271,24 +264,23 @@ public class ThemBaiViet extends AppCompatActivity {
         }
     }
 
-    private void ShowFileChooser()
-    {
+    private void ShowFileChooser() {
         Intent intent = new Intent();
         intent.setType("video/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"Chọn Video"),REQUEST_READ_PERMISSION);
+        startActivityForResult(Intent.createChooser(intent, "Chọn Video"), REQUEST_READ_PERMISSION);
 
     }
 
     private void anhxa() {
-        Intent i =getIntent();
-        user= (User) i.getSerializableExtra("taikhoan");
-        btnDangBai=findViewById(R.id.btnDANGBAI);
-        btnUpload=findViewById(R.id.btnUPVIDEO);
-        txtTrangThai=findViewById(R.id.txtTRANGTHAI);
-        edtTieuDe=findViewById(R.id.edtTieuDe);
-        spinnerTHELOAI=findViewById(R.id.spinnerTHELOAI);
-        btnChon=findViewById(R.id.btnChon);
-        imgMonAn=findViewById(R.id.imgMonAn);
+        Intent i = getIntent();
+        user = (User) i.getSerializableExtra("taikhoan");
+        btnDangBai = findViewById(R.id.btnDANGBAI);
+        btnUpload = findViewById(R.id.btnUPVIDEO);
+        txtTrangThai = findViewById(R.id.txtTRANGTHAI);
+        edtTieuDe = findViewById(R.id.edtTieuDe);
+        spinnerTHELOAI = findViewById(R.id.spinnerTHELOAI);
+        btnChon = findViewById(R.id.btnChon);
+        imgMonAn = findViewById(R.id.imgMonAn);
     }
 }
