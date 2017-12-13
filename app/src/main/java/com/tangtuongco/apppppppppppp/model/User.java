@@ -15,8 +15,10 @@ public class User implements Serializable {
     private Date NgaySinh;
     private String DiaChi;
     private String SDT;
+    private int PhanLoai; //1 là người dùng , 2 là admin
     private String Email;
     private String Name;
+    private String time;
     ArrayList<BaiViet> listBaiViet;
 
     public String getID() {
@@ -59,6 +61,14 @@ public class User implements Serializable {
         this.SDT = SDT;
     }
 
+    public int getPhanLoai() {
+        return PhanLoai;
+    }
+
+    public void setPhanLoai(int phanLoai) {
+        PhanLoai = phanLoai;
+    }
+
     public String getEmail() {
         return Email;
     }
@@ -75,6 +85,14 @@ public class User implements Serializable {
         Name = name;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public ArrayList<BaiViet> getListBaiViet() {
         return listBaiViet;
     }
@@ -87,15 +105,21 @@ public class User implements Serializable {
 
     }
 
-    public User(String ID, String password, Date ngaySinh, String diaChi, String SDT, String email, String name, ArrayList<BaiViet> listBaiViet) {
+    public User(String ID, String password, Date ngaySinh, String diaChi, String SDT, int phanLoai, String email, String name, String time, ArrayList<BaiViet> listBaiViet) {
 
         this.ID = ID;
         Password = password;
         NgaySinh = ngaySinh;
         DiaChi = diaChi;
         this.SDT = SDT;
+        PhanLoai = phanLoai;
         Email = email;
         Name = name;
+        this.time = time;
         this.listBaiViet = listBaiViet;
     }
+
+
+
+
 }

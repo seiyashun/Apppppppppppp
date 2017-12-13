@@ -12,6 +12,7 @@ public class BaiViet {
     private String IDBAIVIET;
     private String ImageIndex;
     private String TenBaiViet;
+    private String time;
     ChiTietBaiViet chiTietBaiViet;
 
     public String getIduser() {
@@ -54,6 +55,14 @@ public class BaiViet {
         TenBaiViet = tenBaiViet;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public ChiTietBaiViet getChiTietBaiViet() {
         return chiTietBaiViet;
     }
@@ -66,13 +75,14 @@ public class BaiViet {
 
     }
 
-    public BaiViet(String iduser, String tenchude, String IDBAIVIET, String imageIndex, String tenBaiViet, ChiTietBaiViet chiTietBaiViet) {
+    public BaiViet(String iduser, String tenchude, String IDBAIVIET, String imageIndex, String tenBaiViet, String time, ChiTietBaiViet chiTietBaiViet) {
 
         this.iduser = iduser;
         this.tenchude = tenchude;
         this.IDBAIVIET = IDBAIVIET;
         ImageIndex = imageIndex;
         TenBaiViet = tenBaiViet;
+        this.time = time;
         this.chiTietBaiViet = chiTietBaiViet;
     }
 }

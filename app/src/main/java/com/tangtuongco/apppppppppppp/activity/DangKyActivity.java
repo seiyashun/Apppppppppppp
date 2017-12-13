@@ -107,13 +107,14 @@ public class DangKyActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+                user.setPhanLoai(1);
                 user.setID(ID);
                 user.setPassword(Pass);
                 user.setSDT(SDT);
                 user.setEmail(Email);
                 user.setName(Name);
                 user.setDiaChi(DiaChi);
+
 
 
                 mData.child("User").addListenerForSingleValueEvent(new ValueEventListener() {

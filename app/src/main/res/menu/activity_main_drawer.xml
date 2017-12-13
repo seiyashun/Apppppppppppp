@@ -3,41 +3,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/menuHam"
-            android:icon="@drawable/ic_soup"
-            android:title="Món Hầm" />
-        <item
-            android:id="@+id/menuMan"
-            android:icon="@drawable/ic_pan"
-            android:title="Món Mặn" />
-        <item
-            android:id="@+id/menuChay"
-            android:icon="@drawable/ic_salad"
-            android:title="Món Chay" />
-        <item
-        android:id="@+id/menuNgot"
-        android:icon="@drawable/ic_cupcake"
-        android:title="Món Ngọt" />
-        <item
-            android:id="@+id/menuCanh"
-            android:icon="@drawable/ic_hot_pot"
-            android:title="Món Canh" />
+    <group  android:id="@+id/gr1">
+        <!--<item-->
+            <!--android:id="@+id/menuHam"-->
+            <!--android:icon="@drawable/ic_soup"-->
+            <!--android:title="Món Hầm" />-->
+        <!--<item-->
+            <!--android:id="@+id/menuMan"-->
+            <!--android:icon="@drawable/ic_pan"-->
+            <!--android:title="Món Mặn" />-->
+        <!--<item-->
+            <!--android:id="@+id/menuChay"-->
+            <!--android:icon="@drawable/ic_salad"-->
+            <!--android:title="Món Chay" />-->
+        <!--<item-->
+        <!--android:id="@+id/menuNgot"-->
+        <!--android:icon="@drawable/ic_cupcake"-->
+        <!--android:title="Món Ngọt" />-->
+        <!--<item-->
+            <!--android:id="@+id/menuCanh"-->
+            <!--android:icon="@drawable/ic_hot_pot"-->
+            <!--android:title="Món Canh" />-->
 
     </group>
 
-    <item android:title="Tài Khoản">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_info"
-                android:title="Thông Tin Cá Nhân" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_exit"
-                android:title="Đăng Xuất" />
-        </menu>
-    </item>
+    <group
+        android:id="@+id/group2"
+        android:orderInCategory="999">
+        <item android:title="Tài Khoản">
+            <menu>
+                <item
+                    android:id="@+id/nav_share"
+                    android:icon="@drawable/ic_info"
+                    android:title="Thông Tin Cá Nhân" />
+                <item
+                    android:id="@+id/nav_send"
+                    android:icon="@drawable/ic_exit"
+                    android:title="Đăng Xuất" />
+            </menu>
+        </item>
+    </group>
+
+
+
 
 </menu>

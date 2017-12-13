@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -70,6 +71,11 @@ public class ThemBaiViet extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_them_bai_viet);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Bài Viết Mới");
         anhxa();
         mData= FirebaseDatabase.getInstance().getReference();
 
@@ -161,6 +167,10 @@ public class ThemBaiViet extends AppCompatActivity {
                 bv.setChiTietBaiViet(chitiet);
                 bv.setImageIndex(tamthoi);
 
+                Long tslong = System.currentTimeMillis()/1000;
+                String ts=tslong.toString();
+                bv.setTime(ts);
+
                 String IDBAIVIET= createID()+ user.getID().toString();
                 mData.child("DanhSachBaiViet").push().setValue(bv).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -191,6 +201,11 @@ public class ThemBaiViet extends AppCompatActivity {
     public int createID(){
         Date now = new Date();
         int id = Integer.parseInt(new SimpleDateFormat("ddHHmmss",  Locale.US).format(now));
+        return id;
+    }
+    public int createIDBaiViet(){
+        Date now = new Date();
+        int id = Integer.parseInt(new SimpleDateFormat("ssmmHHDD",  Locale.US).format(now));
         return id;
     }
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,15 +41,18 @@ import com.tangtuongco.apppppppppppp.model.ChuDe;
 import com.tangtuongco.apppppppppppp.model.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     ViewFlipper viewFlipper;
     ListView lstMain;
-    TextView idbarrr, emailbarr;
+    TextView idbarrr, emailbarr , chucvubarrr;
     DatabaseReference mData;
     User user;
     int flag = 0;
     ArrayList<BaiViet> listbvuser = new ArrayList<>();
+    ArrayList<String> listchude= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,15 +79,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        View header = navigationView.getHeaderView(0);
-        idbarrr = header.findViewById(R.id.txtIDBARR);
-        emailbarr = header.findViewById(R.id.txtEMAILBARRR);
-        getSupportActionBar().setTitle("Trang Chủ");
 
 
         mData = FirebaseDatabase.getInstance().getReference();
+        loadTheLoai();
+
+
+
+
         anhxa();
 
         ActionViewFlipper();
@@ -89,20 +95,82 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadDataBaiViet();
 
 
+
+
     }
 
+    private void loadTheLoai() {
+        final ArrayList<String> arrChuDe = new ArrayList<>();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+
+        idbarrr = header.findViewById(R.id.txtIDBARR);
+        emailbarr = header.findViewById(R.id.txtEMAILBARRR);
+        chucvubarrr=header.findViewById(R.id.txtChucVu);
+
+        getSupportActionBar().setTitle("Trang Chủ");
+
+        Menu m= navigationView.getMenu();
+        final SubMenu menuGr=m.addSubMenu("Phân Loại");
+
+
+
+        mData.child("DanhSachTheLoai").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                ChuDe cd=dataSnapshot.getValue(ChuDe.class);
+                arrChuDe.add(cd.getTenChuDe().toString());
+                menuGr.add(R.id.gr1,Menu.NONE,Menu.NONE,cd.getTenChuDe().toString());
+
+
+
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
+
     private void loadDataBaiViet() {
+
 
 
         final ArrayList<BaiViet> arrBaiViet=new ArrayList<>();
         final adapterManHinhChinh adaptarmain = new adapterManHinhChinh(arrBaiViet, getApplicationContext());
         lstMain.setAdapter(adaptarmain);
-        mData.child("DanhSachBaiViet").addChildEventListener(new ChildEventListener() {
+
+        mData.child("DanhSachBaiViet").orderByChild("time").limitToFirst(6).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 BaiViet bv  = dataSnapshot.getValue(BaiViet.class);
                 arrBaiViet.add(bv);
-                adaptarmain.notifyDataSetChanged();
+                thucthi(arrBaiViet,adaptarmain);
+
+
             }
 
             @Override
@@ -130,6 +198,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+    }
+
+    private void thucthi(ArrayList<BaiViet> arrBaiViet, adapterManHinhChinh adaptarmain) {
+
+
+        Collections.sort(arrBaiViet, new Comparator<BaiViet>() {
+            @Override
+            public int compare(BaiViet baiViet, BaiViet t1) {
+                return t1.getTime().compareTo(baiViet.getTime());
+            }
+        });
+
+
+
+        adaptarmain.notifyDataSetChanged();
     }
 
     private void loadDataUser() {
@@ -189,6 +272,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         user = (User) i.getSerializableExtra("taikhoan");
         idbarrr.setText(user.getName().toString());
         emailbarr.setText(user.getEmail().toString());
+        if(user.getPhanLoai()==1)
+        {
+            chucvubarrr.setText("Thành Viên");
+        }
+        else
+        {
+            chucvubarrr.setText("Ban Quản Trị");
+        }
 
         String id = user.getID();
 

@@ -3,7 +3,7 @@
     package="com.tangtuongco.apppppppppppp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +17,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -33,7 +33,12 @@
             android:theme="@style/AppTheme.NoActionBar">
             >
         </activity>
-        <activity android:name=".activity.ThemBaiViet"></activity>
+        <activity
+            android:name=".activity.ThemBaiViet"
+            android:theme="@style/AppTheme.NoActionBar">
+            >
+        </activity>
+        <activity android:name=".activity.HostActivity"></activity>
     </application>
 
 </manifest>

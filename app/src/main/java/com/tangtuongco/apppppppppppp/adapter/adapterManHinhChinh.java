@@ -46,6 +46,14 @@ public class adapterManHinhChinh extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if(databaiviet.size()>=4)
+        {
+            return 4;
+        }
+        if(databaiviet.size()<3)
+        {
+            return databaiviet.size();
+        }
         return databaiviet.size();
     }
 

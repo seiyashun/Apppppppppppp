@@ -12,12 +12,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tangtuongco.apppppppppppp.R;
+import com.tangtuongco.apppppppppppp.model.Host;
 import com.tangtuongco.apppppppppppp.model.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,9 +38,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         anhxa();
         mData=FirebaseDatabase.getInstance().getReference();
+//        Host a=new Host("HOST","HOST123");
+//        mData.child("HOST").child("HOST").setValue(a);
 
 
-        addControl();
+
+       addControl();
 
 
     }
@@ -65,42 +70,81 @@ public class LoginActivity extends AppCompatActivity {
         final String Pass=edtPass.getText().toString();
         if (!TextUtils.isEmpty(ID))
         {
-            mData.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    int flag = 0;
-                    for(DataSnapshot postSnapshot:dataSnapshot.getChildren()) {
-                        User a = postSnapshot.getValue(User.class);
-                        //Log.d("AAA",String.valueOf(a.getID()));
-                        if(a.getID().equals(ID))
+            if(ID.equals("HOST"))
+            {
+                mData.child("HOST").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Host h=dataSnapshot.getValue(Host.class);
+                        if(Pass.equals(h.getMatKhauHost().toString()))
                         {
-                            if(a.getPassword().equals(Pass)) {
-                                user=a;
-                                flag = 1;
+                            Toast.makeText(LoginActivity.this, "Host đăng nhập", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this,HostActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+            else
+            {
+                mData.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        int flag = 0;
+                        for(DataSnapshot postSnapshot:dataSnapshot.getChildren()) {
+                            User a = postSnapshot.getValue(User.class);
+                            //Log.d("AAA",String.valueOf(a.getID()));
+                            if(a.getID().equals(ID))
+                            {
+                                if(a.getPassword().equals(Pass)) {
+                                    user=a;
+                                    flag = 1;
+                                }
+
                             }
+                        }
+                        if(flag == 1)
+                        {
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra("taikhoan", user);
+                            startActivity(intent);
+                            return;
+                        }
+                        else
+                        {
+
+                            Toast.makeText(LoginActivity.this, "Sai Tài Khoản Hoặc Mật Khẩu", Toast.LENGTH_SHORT).show();
+
 
                         }
                     }
-                    if(flag == 1)
-                    {
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("taikhoan", user);
-                        startActivity(intent);
-                        return;
-                    }
-                    else
-                    {
-
-                        Toast.makeText(LoginActivity.this, "Sai Tài Khoản Hoặc Mật Khẩu", Toast.LENGTH_SHORT).show();
-
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
                     }
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                });
+            }
 
-                }
-            });
         }
         else
         {
