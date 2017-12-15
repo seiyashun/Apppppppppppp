@@ -1,12 +1,13 @@
 package com.tangtuongco.apppppppppppp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Administrator on 08/12/2017.
  */
 
-public class BaiViet {
+public class BaiViet implements Serializable {
     private String iduser;
     private String tenchude;
     private String IDBAIVIET;

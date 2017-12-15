@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -94,9 +95,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadDataUser();
         loadDataBaiViet();
 
+        ClickListView();
 
 
 
+
+    }
+
+    private void ClickListView() {
+        lstMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                BaiViet a = new BaiViet();
+                a=listbvuser.get(i);
+                Intent intent = new Intent(MainActivity.this, BaiVietChiTiet.class);
+                Bundle extras=new Bundle();
+                extras.putString("NguoiDungHienTai",user.getID());
+                extras.putString("BaiVietHienTai",a.getIDBAIVIET());
+
+                intent.putExtras(extras);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadTheLoai() {
@@ -209,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return t1.getTime().compareTo(baiViet.getTime());
             }
         });
+        listbvuser=arrBaiViet;
 
 
 

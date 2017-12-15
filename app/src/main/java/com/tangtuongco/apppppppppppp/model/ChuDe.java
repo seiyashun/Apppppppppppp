@@ -1,10 +1,12 @@
 package com.tangtuongco.apppppppppppp.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 08/12/2017.
  */
 
-public class ChuDe {
+public class ChuDe implements Serializable {
     private String idcd;
     private String TenChuDe;
 

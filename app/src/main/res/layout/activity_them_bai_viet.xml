@@ -59,6 +59,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:id="@+id/btnDANGBAI"
+                android:text="Đăng Bài"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
                 android:id="@+id/btnUPVIDEO"
                 android:text="Chọn Video"
                 android:layout_width="wrap_content"
@@ -70,12 +75,24 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-        <Button
-            android:id="@+id/btnDANGBAI"
-            android:text="Đăng Bài"
+        <ProgressBar
+            android:id="@+id/pdbar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:progress="0" />
+        <VideoView
+            android:id="@+id/videoview"
+
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" />
+
 
     </LinearLayout>
+
 
 </LinearLayout>

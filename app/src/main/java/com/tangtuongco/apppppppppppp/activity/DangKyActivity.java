@@ -110,28 +110,29 @@ public class DangKyActivity extends AppCompatActivity {
             dateTime.set(Calendar.DAY_OF_MONTH,i2);
             Calendar c = Calendar.getInstance();
 
-            if(c.get(Calendar.YEAR)<dateTime.get(Calendar.YEAR))
-            {
-
-            }
-            else
-            {
-                if(c.get(Calendar.MONTH)<dateTime.get(Calendar.MONTH))
-                {
-
-                }
-                else
-                {
-                    if(c.get(Calendar.DAY_OF_MONTH)<dateTime.get(Calendar.DAY_OF_MONTH))
-                    {
-                        Toast.makeText(DangKyActivity.this, "Lớn hơn ngày hiện tại !!! LỖI", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        updateText();
-                    }
-                }
-            }
+//            if(c.get(Calendar.YEAR)<dateTime.get(Calendar.YEAR))
+//            {
+//
+//            }
+//            else
+//            {
+//                if(c.get(Calendar.MONTH)<dateTime.get(Calendar.MONTH))
+//                {
+//
+//                }
+//                else
+//                {
+//                    if(c.get(Calendar.DAY_OF_MONTH)<dateTime.get(Calendar.DAY_OF_MONTH))
+//                    {
+//                        Toast.makeText(DangKyActivity.this, "Lớn hơn ngày hiện tại !!! LỖI", Toast.LENGTH_SHORT).show();
+//                    }
+//                    else
+//                    {
+//                        updateText();
+//                    }
+//                }
+//            }
+            updateText();
 
 
 

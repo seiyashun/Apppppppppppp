@@ -1,10 +1,12 @@
 package com.tangtuongco.apppppppppppp.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 08/12/2017.
  */
 
-public class ChiTietBaiViet {
+public class ChiTietBaiViet implements Serializable {
     private String video;
     private String IDChiTietBaiViet;
     private String IDCuaBaiViet;

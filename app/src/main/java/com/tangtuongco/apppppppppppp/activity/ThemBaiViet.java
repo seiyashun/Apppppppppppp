@@ -1,22 +1,27 @@
 package com.tangtuongco.apppppppppppp.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +33,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,7 +46,9 @@ import com.tangtuongco.apppppppppppp.model.ChuDe;
 import com.tangtuongco.apppppppppppp.model.User;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,11 +67,18 @@ public class ThemBaiViet extends AppCompatActivity {
     Spinner spinnerTHELOAI;
     String record = "";
     String tamthoi;
+    String tamthoivideo;
     DatabaseReference mData;
     private Uri filePath;
     private static final int REQUEST_READ_PERMISSION = 9003;
     final int REQUEST_CHOOSE_PIC = 321;
+    VideoView videoview;
+    ProgressBar trangthai;
+    private Uri videoUri;
     FirebaseStorage storage = FirebaseStorage.getInstance();
+    private static final int REQUEST_CODE=101;
+    private StorageReference videoRef;
+
 
 
     @Override
@@ -76,10 +92,60 @@ public class ThemBaiViet extends AppCompatActivity {
         getSupportActionBar().setTitle("Bài Viết Mới");
         anhxa();
         mData = FirebaseDatabase.getInstance().getReference();
+//        StorageReference storageReference=FirebaseStorage.getInstance().getReference();
+//        videoRef=storageReference.child("/video/"+user.getID()+createID()+"/monan.3gp");
 
         loadDataSpinner();
 
         control();
+
+    }
+//    public  void upload(View view)
+//    {
+//        if(videoUri!=null)
+//        {
+//            UploadTask uploadTask=videoRef.putFile(videoUri);
+//
+//            uploadTask.addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception exception) {
+//                    Toast.makeText(ThemBaiViet.this, "Upload thất bại", Toast.LENGTH_SHORT).show();
+//                }
+//            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    Toast.makeText(ThemBaiViet.this, "Upload thành công", Toast.LENGTH_SHORT).show();
+//                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+//                   Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//
+//                }
+//            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                    updateProgress(taskSnapshot);
+//                }
+//            });
+//
+//        }
+//    }
+
+//    public  void chonvideo(View view)
+//    {
+//        Intent intent =new Intent();
+//        intent.setType("video/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(Intent.createChooser(intent,"Chọn video"),REQUEST_CODE);
+//    }
+
+    private void updateProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+        long uploadBytes=taskSnapshot.getBytesTransferred();
+
+        long progress = (100*uploadBytes);
+        Toast.makeText(this, "Uploading", Toast.LENGTH_SHORT).show();
+
+        trangthai.setProgress((int) progress);
+
 
     }
 
@@ -138,7 +204,10 @@ public class ThemBaiViet extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShowFileChooser();
+                Intent intent =new Intent();
+                intent.setType("video/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Chọn video"),REQUEST_CODE);
 
 
             }
@@ -146,33 +215,44 @@ public class ThemBaiViet extends AppCompatActivity {
         btnDangBai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int idbaiviet = createID();
-                String chude = spinnerTHELOAI.getSelectedItem().toString();
-                ChiTietBaiViet chitiet = new ChiTietBaiViet();
-                BaiViet bv = new BaiViet();
-                bv.setIduser(user.getID().toString());
-                bv.setTenchude(chude);
-                bv.setIDBAIVIET(String.valueOf(idbaiviet));
-                chitiet.setIDCuaBaiViet(bv.getIDBAIVIET());
-                int idchitiet = createID();
-                idchitiet = idchitiet + 1;
-                chitiet.setIDChiTietBaiViet(String.valueOf(idchitiet));
-                bv.setTenBaiViet(edtTieuDe.getText().toString());
-                bv.setChiTietBaiViet(chitiet);
-                bv.setImageIndex(tamthoi);
+                if(!TextUtils.isEmpty(tamthoivideo))
+                {
+                    int idbaiviet = createID();
+                    String chude = spinnerTHELOAI.getSelectedItem().toString();
+                    ChiTietBaiViet chitiet = new ChiTietBaiViet();
+                    BaiViet bv = new BaiViet();
+                    bv.setIduser(user.getID().toString());
+                    bv.setTenchude(chude);
+                    bv.setIDBAIVIET(String.valueOf(idbaiviet));
+                    chitiet.setIDCuaBaiViet(bv.getIDBAIVIET());
+                    int idchitiet = createID();
+                    idchitiet = idchitiet + 1;
+                    chitiet.setIDChiTietBaiViet(String.valueOf(idchitiet));
+                    bv.setTenBaiViet(edtTieuDe.getText().toString());
+                    bv.setChiTietBaiViet(chitiet);
+                    bv.setImageIndex(tamthoi);
+                    chitiet.setVideo(tamthoivideo);
 
-                Long tslong = System.currentTimeMillis() / 1000;
-                String ts = tslong.toString();
-                bv.setTime(ts);
+                    Long tslong = System.currentTimeMillis() / 1000;
+                    String ts = createTime();
+                    bv.setTime(ts);
 
-                String IDBAIVIET = createID() + user.getID().toString();
-                mData.child("DanhSachBaiViet").push().setValue(bv).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(ThemBaiViet.this, "Đăng Bài Thành Công", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                });
+
+                    String IDBAIVIET = createID() + user.getID().toString();
+                    mData.child("DanhSachBaiViet").push().setValue(bv).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(ThemBaiViet.this, "Đăng Bài Thành Công", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+                }
+                else {
+                    Toast.makeText(ThemBaiViet.this, "Xin chọn video", Toast.LENGTH_SHORT).show();
+                }
+
+
+
 
 
             }
@@ -197,9 +277,9 @@ public class ThemBaiViet extends AppCompatActivity {
         return id;
     }
 
-    public int createIDBaiViet() {
+    public String createTime() {
         Date now = new Date();
-        int id = Integer.parseInt(new SimpleDateFormat("ssmmHHDD", Locale.US).format(now));
+        String id = (new SimpleDateFormat("ddMMyyHHmmss", Locale.US).format(now));
         return id;
     }
 
@@ -208,12 +288,57 @@ public class ThemBaiViet extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         final StorageReference storageRef = storage.getReferenceFromUrl("gs://cookapp-db2c5.appspot.com");
-        if (requestCode == REQUEST_READ_PERMISSION && requestCode == RESULT_OK && data != null && data.getData() != null) {
-            txtTrangThai.setText(filePath.toString());
-            filePath = data.getData();
+        //Up video
+        if(requestCode==REQUEST_CODE && resultCode==RESULT_OK &&data!=null && data.getData()!=null)
+        {
+
+
+
+
+            StorageReference mountainsRef = storageRef.child("/video/"+user.getID()+createID()+"monan.mp4");
+
+            videoUri=data.getData();
+
+                UploadTask uploadTask=mountainsRef.putFile(videoUri);
+
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(ThemBaiViet.this, "Upload thất bại", Toast.LENGTH_SHORT).show();
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    Toast.makeText(ThemBaiViet.this, "Upload thành công", Toast.LENGTH_SHORT).show();
+                    loadvideo(downloadUrl);
+                    final String linkvdieo = String.valueOf(downloadUrl);
+                    ThemLinkVideo(linkvdieo);
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        updateProgress(taskSnapshot);
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         }
+        //Up ảnh
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CHOOSE_PIC) {
 
@@ -264,6 +389,23 @@ public class ThemBaiViet extends AppCompatActivity {
         }
     }
 
+    private void ThemLinkVideo(String linkvdieo) {
+        tamthoivideo=linkvdieo;
+        txtTrangThai.setText("Đã có video");
+    }
+
+    private void loadvideo(Uri downloadUrl) {
+       
+        videoview.setVideoURI(downloadUrl);
+        videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setVolume(55,55);
+            }
+        });
+        videoview.start();
+    }
+
     private void ShowFileChooser() {
         Intent intent = new Intent();
         intent.setType("video/*");
@@ -282,5 +424,8 @@ public class ThemBaiViet extends AppCompatActivity {
         spinnerTHELOAI = findViewById(R.id.spinnerTHELOAI);
         btnChon = findViewById(R.id.btnChon);
         imgMonAn = findViewById(R.id.imgMonAn);
+        trangthai =findViewById(R.id.pdbar);
+        videoview=findViewById(R.id.videoview);
+
     }
 }
