@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -132,7 +134,16 @@ public class DangKyActivity extends AppCompatActivity {
 //                    }
 //                }
 //            }
-            updateText();
+            if(dateTime.compareTo(c)<=0)
+            {
+                updateText();
+            }
+            else
+            {
+                Toast.makeText(DangKyActivity.this, "Ngày sinh phài nhỏ hơn ngày hiện tại", Toast.LENGTH_SHORT).show();
+            }
+
+//            updateText();
 
 
 
@@ -149,9 +160,11 @@ public class DangKyActivity extends AppCompatActivity {
         final String NgaySin = edtBIRTH.getText().toString();
         final String DiaChi = edtADDRESS.getText().toString();
         final String Name = edtNAME.getText().toString();
-        final String Email = edtEMAIL.getText().toString();
+        final String Email = edtEMAIL.getText().toString().trim();
         final String SDT = edtNUMBER.getText().toString();
         final String Pass = edtPASSWORD.getText().toString();
+        final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
 
 
         if (!TextUtils.isEmpty(ID)) {
@@ -159,13 +172,33 @@ public class DangKyActivity extends AppCompatActivity {
             if(ID.trim().length()<7)
             {
                 Toast.makeText(this, "ID phải dài hơn 7 kí tự", Toast.LENGTH_SHORT).show();
+                
             }
             else
             if(Pass.length()<7)
             {
                 Toast.makeText(this, "PASS phải dài hơn 7 kí tự", Toast.LENGTH_SHORT).show();
             }
-
+            if(NgaySin.length()==0)
+            {
+                Toast.makeText(this, "Chọn Ngày Sinh", Toast.LENGTH_SHORT).show();
+            }
+            if(Email.length()==0)
+            {
+                Toast.makeText(this, "Nhập Mail", Toast.LENGTH_SHORT).show();
+            }
+            if(SDT.length()==0)
+            {
+                Toast.makeText(this, "Nhập Số Điện Thoại", Toast.LENGTH_SHORT).show();
+            }
+            if(DiaChi.length()==0)
+            {
+                Toast.makeText(this, "Nhập Địa Chỉ", Toast.LENGTH_SHORT).show();
+            }
+            if(!Email.matches(emailPattern))
+            {
+                Toast.makeText(this, "Sai định dạng MAIL", Toast.LENGTH_SHORT).show();
+            }
             else
             {
                 final User user = new User();
@@ -224,6 +257,7 @@ public class DangKyActivity extends AppCompatActivity {
             Toast.makeText(this, "Xin Nhập ID", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     public void addNewUser(User user) {
         final String ID = edtID.getText().toString().trim();

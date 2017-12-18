@@ -24,6 +24,19 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -78,6 +91,8 @@ public class ThemBaiViet extends AppCompatActivity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     private static final int REQUEST_CODE=101;
     private StorageReference videoRef;
+    SimpleExoPlayer exoPlayer;
+    SimpleExoPlayerView exoPlayerView;
 
 
 
@@ -90,6 +105,12 @@ public class ThemBaiViet extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Bài Viết Mới");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         anhxa();
         mData = FirebaseDatabase.getInstance().getReference();
 //        StorageReference storageReference=FirebaseStorage.getInstance().getReference();
@@ -100,7 +121,12 @@ public class ThemBaiViet extends AppCompatActivity {
         control();
 
     }
-//    public  void upload(View view)
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+    //    public  void upload(View view)
 //    {
 //        if(videoUri!=null)
 //        {
@@ -222,7 +248,7 @@ public class ThemBaiViet extends AppCompatActivity {
                     ChiTietBaiViet chitiet = new ChiTietBaiViet();
                     BaiViet bv = new BaiViet();
                     bv.setIduser(user.getID().toString());
-                    bv.setTenchude(chude);
+                    bv.setTenChuDe(chude.toString());
                     bv.setIDBAIVIET(String.valueOf(idbaiviet));
                     chitiet.setIDCuaBaiViet(bv.getIDBAIVIET());
                     int idchitiet = createID();
@@ -395,15 +421,25 @@ public class ThemBaiViet extends AppCompatActivity {
     }
 
     private void loadvideo(Uri downloadUrl) {
-       
-        videoview.setVideoURI(downloadUrl);
-        videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setVolume(55,55);
-            }
-        });
-        videoview.start();
+
+//        videoview.setVideoURI(downloadUrl);
+//        videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mediaPlayer) {
+//                mediaPlayer.setVolume(55,55);
+//            }
+//        });
+//        videoview.start();
+        BandwidthMeter bandwidthMeter=new DefaultBandwidthMeter();
+        TrackSelector trackSelector=new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
+        exoPlayer= ExoPlayerFactory.newSimpleInstance(this,trackSelector);
+        DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
+        ExtractorsFactory extractorsFactory=new DefaultExtractorsFactory();
+        MediaSource videosource=new ExtractorMediaSource(videoUri,dataSourceFactory,extractorsFactory,null,null);
+        exoPlayerView.setPlayer(exoPlayer);
+        exoPlayer.prepare(videosource);
+        exoPlayer.setPlayWhenReady(true);
+
     }
 
     private void ShowFileChooser() {
@@ -425,7 +461,8 @@ public class ThemBaiViet extends AppCompatActivity {
         btnChon = findViewById(R.id.btnChon);
         imgMonAn = findViewById(R.id.imgMonAn);
         trangthai =findViewById(R.id.pdbar);
-        videoview=findViewById(R.id.videoview);
+//        videoview=findViewById(R.id.videoview);
+        exoPlayerView=findViewById(R.id.exoplayerview1);
 
     }
 }

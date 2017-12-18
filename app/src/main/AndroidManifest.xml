@@ -41,7 +41,9 @@
         <activity
             android:name=".activity.HostActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activity.BaiVietChiTiet"></activity>
+        <activity android:name=".activity.BaiVietChiTiet" />
+        <activity android:name=".activity.DanhSachBaiViet" />
+        <activity android:name=".activity.ChiTietNguoiDung"></activity>
     </application>
 
 </manifest>

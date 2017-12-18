@@ -1,6 +1,7 @@
 package com.tangtuongco.apppppppppppp.adapter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,10 @@ import com.tangtuongco.apppppppppppp.model.BaiViet;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 11/12/2017.
+ * Created by Administrator on 18/12/2017.
  */
 
-public class adapterManHinhChinh extends BaseAdapter {
+public class adapterDanhSachBaiVietTheoChuDe extends BaseAdapter {
     ArrayList<BaiViet> databaiviet;
     Context context;
 
@@ -38,7 +39,7 @@ public class adapterManHinhChinh extends BaseAdapter {
         this.context = context;
     }
 
-    public adapterManHinhChinh(ArrayList<BaiViet> databaiviet, Context context) {
+    public adapterDanhSachBaiVietTheoChuDe(ArrayList<BaiViet> databaiviet, Context context) {
 
         this.databaiviet = databaiviet;
         this.context = context;
@@ -46,14 +47,7 @@ public class adapterManHinhChinh extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if(databaiviet.size()>=4)
-        {
-            return 4;
-        }
-        if(databaiviet.size()<3)
-        {
-            return databaiviet.size();
-        }
+
         return databaiviet.size();
     }
 
@@ -66,45 +60,41 @@ public class adapterManHinhChinh extends BaseAdapter {
     public long getItemId(int i) {
         return i;
     }
-    public  class ViewHolder
-    {
-        TextView txtTenMonAn,txtTheLoai,txtNguoiDang;
+
+    public class ViewHolder {
+        TextView txtTenMonAn, txtTheLoai, txtNguoiDang;
         ImageView imgMonAn;
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder=null;
-        if(view==null)
-        {
-            viewHolder=new ViewHolder();
-            LayoutInflater inflater= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.apdater_baiviet_chung,null);
-            viewHolder.txtNguoiDang=view.findViewById(R.id.txtTenNguoiViet);
-            viewHolder.txtTenMonAn=view.findViewById(R.id.txtTenBaiViet);
-            viewHolder.txtTheLoai=view.findViewById(R.id.txtTenTheLoai);
-            viewHolder.imgMonAn=view.findViewById(R.id.imgListMonAn);
+        ViewHolder viewHolder = null;
+        if (view == null) {
+            viewHolder = new ViewHolder();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.apdater_danhsach_baiviet_chung, null);
+//            view = inflater.inflate(R.layout.adap,null);
+            viewHolder.txtNguoiDang = view.findViewById(R.id.txtTenNguoiVietChung);
+            viewHolder.txtTenMonAn = view.findViewById(R.id.txtTenBaiVietChung);
+            viewHolder.txtTheLoai = view.findViewById(R.id.txtTenTheLoaiChung);
+            viewHolder.imgMonAn = view.findViewById(R.id.imgListMonAnChung);
             view.setTag(viewHolder);
 
-            BaiViet bv= (BaiViet) getItem(i);
+            BaiViet bv = (BaiViet) getItem(i);
             viewHolder.txtTheLoai.setText(bv.getTenChuDe().toString());
             viewHolder.txtTenMonAn.setText(bv.getTenBaiViet().toString());
             viewHolder.txtNguoiDang.setText(bv.getIduser().toString());
             Picasso.with(context).load(bv.getImageIndex()).into(viewHolder.imgMonAn);
 
 
-
-        }
-        else
-        {
-            viewHolder= (ViewHolder) view.getTag();
-            BaiViet bv= (BaiViet) getItem(i);
+        } else {
+            viewHolder = (ViewHolder) view.getTag();
+            BaiViet bv = (BaiViet) getItem(i);
             viewHolder.txtTheLoai.setText(bv.getTenChuDe().toString());
             viewHolder.txtTenMonAn.setText(bv.getTenBaiViet().toString());
             viewHolder.txtNguoiDang.setText(bv.getIduser().toString());
             Picasso.with(context).load(bv.getImageIndex()).into(viewHolder.imgMonAn);
         }
-
 
 
         return view;

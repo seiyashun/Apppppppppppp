@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int flag = 0;
     ArrayList<BaiViet> listbvuser = new ArrayList<>();
     ArrayList<String> listchude= new ArrayList<>();
+     ArrayList<ChuDe> arrMenu = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle("Trang Chủ");
 
         Menu m= navigationView.getMenu();
+
         final SubMenu menuGr=m.addSubMenu("Phân Loại");
 
 
@@ -142,7 +144,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChuDe cd=dataSnapshot.getValue(ChuDe.class);
                 arrChuDe.add(cd.getTenChuDe().toString());
-                menuGr.add(R.id.gr1,Menu.NONE,Menu.NONE,cd.getTenChuDe().toString());
+                luumenu(cd);
+                menuGr.add(R.id.gr1,arrChuDe.size()-1,Menu.NONE,cd.getTenChuDe().toString());
 
 
 
@@ -173,6 +176,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    private void luumenu(ChuDe arrChuDe) {
+        arrMenu.add(arrChuDe);
+
+    }
 
 
     private void loadDataBaiViet() {
@@ -382,6 +389,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
             finish();
         }
+        for(int i=0;i<=arrMenu.size();i++)
+        {
+            if(id==i)
+            {
+
+                Intent intent = new Intent(MainActivity.this, DanhSachBaiViet.class);
+                Bundle extras=new Bundle();
+                extras.putString("NguoiDungHienTai",user.getID());
+                extras.putString("ChuDe",arrMenu.get(i).getTenChuDe());
+
+                intent.putExtras(extras);
+                startActivity(intent);
+            }
+        }
+        if(id==R.id.nav_share)
+        {
+            Intent intent = new Intent(MainActivity.this, ChiTietNguoiDung.class);
+            Bundle extras=new Bundle();
+            extras.putString("NguoiDungHienTai",user.getID());
+            intent.putExtras(extras);
+            startActivity(intent);
+        }
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

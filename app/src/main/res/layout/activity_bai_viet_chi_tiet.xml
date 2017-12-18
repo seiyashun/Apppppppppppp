@@ -34,11 +34,16 @@
 
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <VideoView
-            android:id="@+id/videoChiTiet"
+        android:layout_height="match_parent">
+        <!--<VideoView-->
+        <!--android:id="@+id/videoChiTiet"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp" />-->
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/exoplayerview"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="350dp">
+        </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
 
         <LinearLayout
             android:orientation="horizontal"

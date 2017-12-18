@@ -14,6 +14,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
@@ -39,6 +54,8 @@ public class BaiVietChiTiet extends AppCompatActivity {
     BaiViet baiVietHienTai = new BaiViet();
     User userHienTai = new User();
     BinhLuan binhluan=new BinhLuan();
+    SimpleExoPlayer exoPlayer;
+    SimpleExoPlayerView exoPlayerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +82,18 @@ public class BaiVietChiTiet extends AppCompatActivity {
         anhxa();
         loadBaiViet();
         control();
+
+        //Exoplayer
+        BandwidthMeter bandwidthMeter=new DefaultBandwidthMeter();
+        TrackSelector trackSelector=new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
+        exoPlayer= ExoPlayerFactory.newSimpleInstance(this,trackSelector);
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     private void control() {
@@ -220,17 +249,24 @@ public class BaiVietChiTiet extends AppCompatActivity {
         txtTieuDe.setText(a.getTenBaiViet());
         String video = a.getChiTietBaiViet().getVideo();
         Uri videoUri= Uri.parse(video);
-        videoView.setVideoURI(videoUri);
-        videoView.start();
+//        videoView.setVideoURI(videoUri);
+//        videoView.start();
+        DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
+        ExtractorsFactory extractorsFactory=new DefaultExtractorsFactory();
+        MediaSource videosource=new ExtractorMediaSource(videoUri,dataSourceFactory,extractorsFactory,null,null);
+        exoPlayerView.setPlayer(exoPlayer);
+        exoPlayer.prepare(videosource);
+        exoPlayer.setPlayWhenReady(true);
 
     }
 
     private void anhxa() {
         txtTieuDe=findViewById(R.id.txtTieuDeBaiViet);
-        videoView=findViewById(R.id.videoChiTiet);
+//        videoView=findViewById(R.id.videoChiTiet);
         lstBinhLuan=findViewById(R.id.lstCmt);
         edtBinhLuan=findViewById(R.id.edtBinhLuan);
         btnBinhLuan=findViewById(R.id.btnBinhLuan);
+        exoPlayerView=findViewById(R.id.exoplayerview);
 
     }
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class BaiViet implements Serializable {
     private String iduser;
-    private String tenchude;
+    private String TenChuDe;
     private String IDBAIVIET;
     private String ImageIndex;
     private String TenBaiViet;
@@ -24,12 +24,12 @@ public class BaiViet implements Serializable {
         this.iduser = iduser;
     }
 
-    public String getTenchude() {
-        return tenchude;
+    public String getTenChuDe() {
+        return TenChuDe;
     }
 
-    public void setTenchude(String tenchude) {
-        this.tenchude = tenchude;
+    public void setTenChuDe(String tenChuDe) {
+        TenChuDe = tenChuDe;
     }
 
     public String getIDBAIVIET() {
@@ -76,10 +76,10 @@ public class BaiViet implements Serializable {
 
     }
 
-    public BaiViet(String iduser, String tenchude, String IDBAIVIET, String imageIndex, String tenBaiViet, String time, ChiTietBaiViet chiTietBaiViet) {
+    public BaiViet(String iduser, String tenChuDe, String IDBAIVIET, String imageIndex, String tenBaiViet, String time, ChiTietBaiViet chiTietBaiViet) {
 
         this.iduser = iduser;
-        this.tenchude = tenchude;
+        TenChuDe = tenChuDe;
         this.IDBAIVIET = IDBAIVIET;
         ImageIndex = imageIndex;
         TenBaiViet = tenBaiViet;
